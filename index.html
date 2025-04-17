@@ -130,7 +130,6 @@
             <div class="interactive-container">
                 <h3 class="text-xl font-semibold mb-3 text-center text-indigo-600">Interactive DoO Control</h3>
                 <p class="text-center instructional-text mb-4">Adjust the amount of NaClO added per gram of cellulose pulp. Observe the effect on the cellulose chain schematic and the resulting estimated DoO.</p>
-                {/* DoO Control App - Code remains the same as previous version */}
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
                         <label for="nacloAmount">NaClO Added (mmol / g cellulose): <span id="nacloValue" class="font-bold font-mono text-blue-600">10.0</span></label>
@@ -143,7 +142,6 @@
                     <div class="visualization-box">
                         <p class="absolute top-1 left-2 text-xs text-gray-500">Cellulose Chain Schematic:</p>
                         <div id="celluloseVis" class="cellulose-chain">
-                            {/* Glucose units will be added by JS */}
                         </div>
                     </div>
                 </div>
@@ -198,7 +196,6 @@
                     </div>
                     <div id="feedstockFiberVis" class="visualization-box feedstock-fiber-vis">
                         <p class="absolute top-1 left-2 text-xs text-gray-500">Typical Fiber Network:</p>
-                        {/* Fiber elements added by JS */}
                     </div>
                 </div>
                  <p class="text-xs text-gray-500 mt-4 text-center">Note: Properties are relative and illustrative, based on trends observed in Mazega et al. (2025)<sup class="text-blue-500">[1]</sup>. Actual values depend strongly on specific pulp source and exact processing.</p>
@@ -214,7 +211,6 @@
              <div class="interactive-container">
                 <h3 class="text-xl font-semibold mb-3 text-center text-indigo-600">Interactive Fibrillation Explorer</h3>
                 <p class="text-center instructional-text mb-4">Adjust the mechanical energy input to visualize the gradual deconstruction of fiber bundles into nanofibers.</p>
-                 {/* Fibrillation App - Code uses the improved logic from the previous step */}
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
                         <label for="mechEnergy">Mechanical Energy Input: <span id="energyValue" class="font-bold font-mono text-blue-600">Medium</span></label>
@@ -225,7 +221,6 @@
                     </div>
                     <div id="fiberVis" class="visualization-box flex-col">
                          <p class="absolute top-1 left-2 text-xs text-gray-500">Fiber Structure:</p>
-                         {/* Fiber elements will be added by JS */}
                     </div>
                 </div>
              </div>
@@ -289,11 +284,9 @@
                             Approx. C<sub>gel</sub> for this Feedstock: <strong id="critConcValue" class="text-blue-700">~0.25%</strong>
                          </div>
                     </div>
-                    {/* **REVISED** Gel Visualization Box */}
                     <div id="gelVis" class="visualization-box">
                          <p class="absolute top-1 left-2 text-xs text-gray-500">Dispersion State:</p>
                          <span id="gelNetworkText" class="gel-network-text text-blue-700 font-semibold"></span>
-                         {/* Fiber elements will be added by JS */}
                     </div>
                 </div>
                 <p class="text-xs text-gray-500 mt-4 text-center">Note: C<sub>gel</sub> values are illustrative, based on relative rheological behavior reported in Mazega et al. (2025)<sup class="text-blue-500">[1]</sup>. Actual C<sub>gel</sub> also depends on DoO and fibrillation degree.</p>
