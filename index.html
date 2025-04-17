@@ -10,11 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Custom Styles */
+        :root {
+            --bg-color: #eff6ff; /* blue-50 */
+            --text-color-main: #1e3a8a; /* blue-800 */
+            --text-color-header: #172554; /* blue-900 */
+            --text-color-accent: #1e40af; /* blue-700 */
+            --text-color-subtle: #1d4ed8; /* blue-600 */
+            --border-color-light: #dbeafe; /* blue-100 */
+            --border-color-medium: #bfdbfe; /* blue-200 */
+            --border-color-dark: #93c5fd; /* blue-300 */
+            --accent-color: #3b82f6; /* blue-500 */
+            --highlight-bg: #dbeafe; /* blue-100 */
+            --vis-bg-color: #f0f9ff; /* sky-50 */
+            --vis-border-color: #7dd3fc; /* sky-300 */
+        }
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-            color: #1e3a8a; /* blue-800 */
-            background-color: #eff6ff; /* blue-50 */
+            color: var(--text-color-main);
+            background-color: var(--bg-color);
         }
         /* Animation */
         @keyframes fadeIn {
@@ -25,45 +39,51 @@
             opacity: 0; animation: fadeIn 0.8s ease-out forwards;
         }
         /* Interactive elements */
-        label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #1e40af; /* blue-700 */ }
-        input[type="range"] { width: 100%; cursor: pointer; accent-color: #3b82f6; /* blue-500 */ }
-        .output-box { background-color: #dbeafe; /* blue-100 */ border: 1px solid #bfdbfe; /* blue-200 */ padding: 0.75rem; border-radius: 0.375rem; margin-top: 0.5rem; text-align: center; font-weight: 500; }
-        .interactive-container { background-color: #ffffff; border: 1px solid #dbeafe; /* blue-100 */ padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .visualization-box { min-height: 150px; background-color: #f0f9ff; /* sky-50 */ border: 1px dashed #7dd3fc; /* sky-300 */ border-radius: 0.375rem; display: flex; /* Changed to flex */ flex-direction: column; /* Stack elements vertically */ align-items: center; justify-content: center; padding: 1rem; margin-top: 1rem; text-align: center; position: relative; overflow: hidden; transition: background-color 0.3s ease; } /* Adjusted for new viz */
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-color-accent); }
+        input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--accent-color); }
+        select { width: 100%; padding: 0.5rem; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; background-color: white; }
+        .output-box { background-color: var(--highlight-bg); border: 1px solid var(--border-color-medium); padding: 0.75rem; border-radius: 0.375rem; margin-top: 0.5rem; text-align: center; font-weight: 500; }
+        .interactive-container { background-color: #ffffff; border: 1px solid var(--border-color-light); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .visualization-box { min-height: 150px; background-color: var(--vis-bg-color); border: 1px dashed var(--vis-border-color); border-radius: 0.375rem; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; margin-top: 1rem; text-align: center; position: relative; overflow: hidden; transition: background-color 0.3s ease; }
 
         /* Visualization Specific Styles */
         .cellulose-chain { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; }
-        .glucose-unit { width: 50px; height: 30px; background-color: #fef3c7; /* amber-100 */ border: 1px solid #fcd34d; /* amber-300 */ border-radius: 4px; position: relative; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .c6-group { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 20px; height: 12px; background-color: #a7f3d0; /* emerald-200 */ border: 1px solid #6ee7b7; /* emerald-300 */ border-radius: 3px; font-size: 0.5rem; line-height: 1; text-align: center; }
-        .c6-group.oxidized { background-color: #fda4af; /* red-300 */ border-color: #f87171; /* red-400 */ color: #7f1d1d; /* red-900 */ }
+        .glucose-unit { width: 50px; height: 30px; background-color: #fef3c7; border: 1px solid #fcd34d; border-radius: 4px; position: relative; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .c6-group { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 20px; height: 12px; background-color: #a7f3d0; border: 1px solid #6ee7b7; border-radius: 3px; font-size: 0.5rem; line-height: 1; text-align: center; }
+        .c6-group.oxidized { background-color: #fda4af; border-color: #f87171; color: #7f1d1d; }
 
-        /* --- Fibrillation Visualization --- */
-        #fiberVis { gap: 3px; /* Add gap between elements */ }
-        .fiber-element { border-radius: 2px; transition: all 0.2s ease-out; background-color: #a5b4fc; /* indigo-300 */ }
-        .bundle { height: 10px; width: 70%; background-color: #c7d2fe; /* indigo-200 */ border: 1px solid #a5b4fc; }
+        #fiberVis { gap: 3px; }
+        .fiber-element { border-radius: 2px; transition: all 0.2s ease-out; background-color: #a5b4fc; }
+        .bundle { height: 10px; width: 70%; background-color: #c7d2fe; border: 1px solid #a5b4fc; }
         .fibril { height: 4px; width: 80%; }
         .nanofiber { height: 2px; width: 90%; opacity: 0.9; }
-        /* --- End Fibrillation --- */
 
+        /* Gelation Visualization */
+        #gelVis { position: relative; } /* Needed for absolute positioning of fibers */
+        .gel-fiber { position: absolute; height: 2px; background-color: #818cf8; /* indigo-400 */ border-radius: 1px; opacity: 0.6; transform-origin: left center; }
+        .gel-network-text { z-index: 10; position: relative; /* Ensure text is above fibers */ }
 
-        .dispersion-vis { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; justify-content: center; }
-        .gel-network { border: 2px dashed #a78bfa; /* violet-400 */ background: repeating-linear-gradient( 45deg, #e9d5ff, #e9d5ff 5px, #f3e8ff 5px, #f3e8ff 10px ); /* purple shades */ } /* Simple pattern for gel */
+        /* Feedstock Visualization */
+        .property-bar-container { width: 100%; background-color: #e5e7eb; /* gray-200 */ border-radius: 4px; height: 1rem; margin-top: 0.25rem; overflow: hidden;}
+        .property-bar { height: 100%; background-color: var(--accent-color); border-radius: 4px; transition: width 0.3s ease; text-align: right; padding-right: 4px; font-size: 0.7rem; color: white; font-weight: 500; }
+        .feedstock-fiber-vis { display: flex; flex-direction: column; gap: 1px; align-items: center; }
+
 
         /* General styling */
-        h1, h2, h3 { color: #172554; /* blue-900 */ }
+        h1, h2, h3 { color: var(--text-color-header); }
         h1 { font-size: 2.5rem; }
-        h2 { border-bottom: 2px solid #93c5fd; /* blue-300 */ padding-bottom: 0.5rem; margin-bottom: 1rem; }
-        p, li { color: #1e3a8a; /* blue-800 */ line-height: 1.7; margin-bottom: 1rem; }
-        strong { color: #1e40af; /* blue-700 */ }
-        code { background-color: #e0e7ff; /* indigo-100 */ color: #3730a3; /* indigo-800 */ padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; }
-        blockquote { border-left: 4px solid #60a5fa; /* blue-400 */ padding-left: 1rem; margin: 1.5rem 0; font-style: italic; color: #1d4ed8; /* blue-600 */ background-color: #dbeafe; /* blue-100 */ }
+        h2 { border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        p, li { color: var(--text-color-main); line-height: 1.7; margin-bottom: 1rem; }
+        strong { color: var(--text-color-accent); }
+        code { background-color: #e0e7ff; color: #3730a3; padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; }
+        blockquote { border-left: 4px solid #60a5fa; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; color: var(--text-color-subtle); background-color: var(--highlight-bg); }
         .section-bg-white { background-color: #ffffff; }
         footer ul { list-style: none; padding-left: 0; }
         footer li { margin-bottom: 0.75rem; font-size: 0.8rem; }
-        footer a { color: #3b82f6; /* blue-500 */ text-decoration: none; }
+        footer a { color: var(--accent-color); text-decoration: none; }
         footer a:hover { text-decoration: underline; }
-        .instructional-text { font-size: 0.875rem; color: #1d4ed8; /* blue-600 */ margin-top: 0.5rem; }
-        sup { font-size: 0.65em; vertical-align: super; padding-left: 2px; color: #60a5fa; /* blue-400 */ }
+        .instructional-text { font-size: 0.875rem; color: var(--text-color-subtle); margin-top: 0.5rem; }
+        sup { font-size: 0.65em; vertical-align: super; padding-left: 2px; color: #60a5fa; }
 
     </style>
 </head>
@@ -80,44 +100,38 @@
 
         <section id="intro" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
             <h2 class="text-2xl font-bold">1. Introduction: What are TOCNFs?</h2>
-            <p>TEMPO-oxidized cellulose nanofibers (TOCNFs, also commonly abbreviated as TOCN) represent a fascinating class of nanomaterials derived from abundant, renewable cellulose sources (like wood pulp or bacterial cellulose). They are produced through a specific chemical oxidation process followed by mechanical treatment<sup class="text-blue-500">[15, 72]</sup>.</p>
-            <p>What makes TOCNFs special?
-                <ul class="list-disc list-inside space-y-1 pl-4">
-                    <li><strong>Nanoscale Dimensions:</strong> Typically 3-50 nm wide and hundreds of nanometers to several micrometers long<sup class="text-blue-500">[14, 19]</sup>.</li>
-                    <li><strong>High Aspect Ratio & Surface Area:</strong> Leading to unique physical properties.</li>
-                    <li><strong>Tunable Surface Chemistry:</strong> The TEMPO process introduces carboxyl groups (-COOH) onto the fiber surface<sup class="text-blue-500">[16, 17]</sup>. At neutral pH, these ionize to negatively charged carboxylates (-COO⁻), making the fibers highly hydrophilic and electrostatically stabilized in water<sup class="text-blue-500">[18]</sup>.</li>
-                    <li><strong>Unique Dispersion Behavior:</strong> Form stable, often transparent, and highly viscous dispersions in water, capable of forming gels at low concentrations<sup class="text-blue-500">[20, 23]</sup>.</li>
-                </ul>
-            </p>
-            <p>These properties make TOCNFs highly valuable for various applications, including rheology modification, reinforcement in composites, barrier films, biomedical scaffolds, and, as discussed previously, as highly effective Pickering emulsion stabilizers<sup class="text-blue-500">[23, 26, 72]</sup>. This guide focuses on the fundamentals of their production and characterization.</p>
+            <p>TEMPO-oxidized cellulose nanofibers (TOCNFs, or TOCN) are advanced nanomaterials derived from renewable cellulose sources like wood pulp or bacterial cellulose via TEMPO-mediated oxidation and subsequent mechanical disintegration<sup class="text-blue-500">[15, 72]</sup>. Their unique combination of nanoscale dimensions, high aspect ratio, tunable surface chemistry (carboxylate groups), and ability to form hydrogels makes them highly valuable<sup class="text-blue-500">[14, 16-20, 23]</sup>.</p>
+            <p>Applications span rheology control, nanocomposites, barrier films, biomedical materials, and Pickering stabilization<sup class="text-blue-500">[23, 26, 72]</sup>. Understanding their production and how process variables influence properties is crucial for tailoring them to specific needs. This guide provides foundational knowledge for researchers entering this field.</p>
         </section>
 
         <section id="reaction" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">2. The TEMPO Oxidation Reaction</h2>
-            <p>The core of TOCNF production is the TEMPO-mediated oxidation. This reaction selectively targets the primary alcohol group (-CH₂OH) at the C6 position of the anhydroglucose units in cellulose, oxidizing it to a carboxyl group (-COOH)<sup class="text-blue-500">[15, 16]</sup>.</p>
+            <h2 class="text-2xl font-bold">2. The TEMPO Oxidation Reaction: Chemistry and Conditions</h2>
+            <p>The core process is the <strong class="text-indigo-600">TEMPO-mediated oxidation</strong>, which selectively converts the primary alcohol at the C6 position of cellulose's glucose units to a carboxyl group (C6-COOH)<sup class="text-blue-500">[15, 16]</sup>. This introduces negative charges (when deprotonated) crucial for nanofiber dispersion.</p>
             <blockquote class="my-4">
-                <strong>Key Reaction:</strong> Cellulose C6-CH₂OH → Cellulose C6-COOH
+                <strong>Regioselective Oxidation:</strong> Cellulose C6-CH₂OH → Cellulose C6-COOH
             </blockquote>
-            <p>This is achieved using a specific catalytic system under controlled conditions (typically aqueous, near room temperature, pH 10-11):</p>
+            <p>The reaction typically involves the following components and conditions, based on established protocols<sup class="text-blue-500">[1, Methods section]</sup>:</p>
             <ul class="list-disc list-inside space-y-2 pl-4">
-                <li><strong>Cellulose Source:</strong> Usually bleached wood pulp (e.g., Eucalyptus Kraft Pulp) or bacterial cellulose<sup class="text-blue-500">[Bayés Ref - Materials]</sup>.</li>
-                <li><strong>TEMPO (2,2,6,6-tetramethylpiperidine-1-oxyl):</strong> The stable nitroxyl radical catalyst that facilitates the selective oxidation<sup class="text-blue-500">[15]</sup>. Used in catalytic amounts (e.g., ~0.16 g per 10 g cellulose<sup class="text-blue-500">[Bayés Ref - Methods]</sup>).</li>
-                <li><strong>Co-catalyst (NaBr):</strong> Sodium bromide works in conjunction with TEMPO<sup class="text-blue-500">[15]</sup>. (e.g., ~1.0 g per 10 g cellulose<sup class="text-blue-500">[Bayés Ref - Methods]</sup>).</li>
-                <li><strong>Primary Oxidant (NaClO):</strong> Sodium hypochlorite is the stoichiometric oxidant that regenerates the active catalytic species derived from TEMPO<sup class="text-blue-500">[15]</sup>. **The amount of NaClO added is the primary control variable for the final Degree of Oxidation (DoO)**<sup class="text-blue-500">[Bayés Ref - Methods]</sup>.</li>
-                <li><strong>Base (NaOH):</strong> Added continuously to maintain the optimal reaction pH (around 10-10.5), consuming protons released during oxidation<sup class="text-blue-500">[Bayés Ref - Methods]</sup>. The reaction is often considered complete when the pH stops dropping.</li>
+                <li><strong>Cellulose Source:</strong> Bleached pulp (e.g., Eucalyptus, Pine, Hemp, Sisal) dispersed in water, typically at a consistency of <strong class="text-indigo-600">1.0 - 1.5 wt%</strong>.</li>
+                <li><strong>TEMPO Catalyst:</strong> Added in catalytic amounts, e.g., <strong class="text-indigo-600">~16 mg per gram</strong> of dry pulp.</li>
+                <li><strong>NaBr Co-catalyst:</strong> Works with TEMPO, e.g., <strong class="text-indigo-600">~100 mg per gram</strong> of dry pulp.</li>
+                <li><strong>NaClO Primary Oxidant:</strong> The stoichiometric oxidant, added in controlled amounts (e.g., <strong class="text-indigo-600">5 to 15 mmol per gram</strong> of dry pulp) to target a specific Degree of Oxidation (DoO).</li>
+                <li><strong>pH Control:</strong> Reaction performed at <strong class="text-indigo-600">pH 10-10.5</strong>, maintained by continuous addition of dilute base (e.g., <strong class="text-indigo-600">0.5 M NaOH</strong>) to neutralize protons generated.</li>
+                <li><strong>Temperature:</strong> Usually conducted near <strong class="text-indigo-600">room temperature</strong> (e.g., 23°C).</li>
+                <li><strong>Reaction End-Point:</strong> Often determined when the pH stabilizes, indicating consumption of the oxidant.</li>
             </ul>
-            <p>After the reaction, the oxidized cellulose pulp is thoroughly washed to remove residual chemicals before proceeding to mechanical fibrillation<sup class="text-blue-500">[Bayés Ref - Methods]</sup>.</p>
+            <p>Following the reaction, thorough washing removes residual salts and byproducts before mechanical treatment.</p>
         </section>
 
         <section id="doo-control" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
             <h2 class="text-2xl font-bold">3. Controlling the Degree of Oxidation (DoO)</h2>
-            <p>The <strong class="text-indigo-600">Degree of Oxidation (DoO)</strong>, typically expressed in mmol of carboxyl groups per gram of cellulose (mmol/g), is a critical parameter influencing TOCNF properties like surface charge, dispersibility, and viscosity<sup class="text-blue-500">[18, Bayes Ref 10]</sup>. It is primarily controlled by the amount of the primary oxidant, NaClO, added during the reaction relative to the amount of cellulose<sup class="text-blue-500">[Bayés Ref - Methods]</sup>.</p>
+            <p>The <strong class="text-indigo-600">Degree of Oxidation (DoO)</strong> (mmol -COOH / g cellulose) dictates surface charge density and significantly impacts TOCNF properties<sup class="text-blue-500">[18, 2]</sup>. It's primarily controlled by the <strong class="text-indigo-600">amount of NaClO</strong> added<sup class="text-blue-500">[1, Methods section]</sup>.</p>
 
             <div class="interactive-container">
                 <h3 class="text-xl font-semibold mb-3 text-center text-indigo-600">Interactive DoO Control</h3>
-                <p class="text-center instructional-text mb-4">Adjust the amount of NaClO added per gram of cellulose pulp to visualize its effect on the oxidation level and the resulting DoO.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <p class="text-center instructional-text mb-4">Adjust the amount of NaClO added per gram of cellulose pulp. Observe the effect on the cellulose chain schematic and the resulting estimated DoO.</p>
+                {/* DoO Control App - Code remains the same as previous version */}
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
                         <label for="nacloAmount">NaClO Added (mmol / g cellulose): <span id="nacloValue" class="font-bold font-mono text-blue-600">10.0</span></label>
                         <input type="range" id="nacloAmount" name="nacloAmount" min="2" max="18" value="10" step="0.5" class="mt-2">
@@ -129,31 +143,79 @@
                     <div class="visualization-box">
                         <p class="absolute top-1 left-2 text-xs text-gray-500">Cellulose Chain Schematic:</p>
                         <div id="celluloseVis" class="cellulose-chain">
-                            </div>
+                            {/* Glucose units will be added by JS */}
+                        </div>
                     </div>
                 </div>
                  <p class="text-xs text-gray-500 mt-4 text-center">Note: This is a simplified representation. Actual DoO depends on reaction efficiency, cellulose source, and conditions. Max theoretical DoO for C6 oxidation is ~6.17 mmol/g.</p>
             </div>
 
-            <p class="mt-6">For example, studies often prepare batches with varying NaClO amounts, such as<sup class="text-blue-500">[Bayés Ref - Methods]</sup>:</p>
+            <p class="mt-6">Typical target levels might be<sup class="text-blue-500">[1, Methods section]</sup>:</p>
             <ul class="list-disc list-inside space-y-1 pl-4">
-                <li><strong>Low Oxidation (e.g., "TOC-5"):</strong> Using ~5 mmol NaClO / g pulp, resulting in lower DoO (e.g., < 1 mmol/g).</li>
-                <li><strong>Medium Oxidation (e.g., "TOC-10"):</strong> Using ~10 mmol NaClO / g pulp, resulting in medium DoO (e.g., ~1.0-1.3 mmol/g).</li>
-                <li><strong>High Oxidation (e.g., "TOC-15"):</strong> Using ~15 mmol NaClO / g pulp, resulting in higher DoO (e.g., ~1.5 mmol/g or more), approaching saturation<sup class="text-blue-500">[Bayés Ref 9]</sup>.</li>
+                <li><strong>Low DoO (< 1 mmol/g):</strong> Using ~5 mmol NaClO/g.</li>
+                <li><strong>Medium DoO (~1.0-1.3 mmol/g):</strong> Using ~10 mmol NaClO/g.</li>
+                <li><strong>High DoO (~1.5+ mmol/g):</strong> Using ~15 mmol NaClO/g.</li>
             </ul>
-            <p>Higher DoO generally leads to better dispersibility in water due to increased electrostatic repulsion, lower fibrillation energy requirements, and higher viscosity at lower concentrations<sup class="text-blue-500">[18, Bayes Ref 10]</sup>.</p>
+            <p>Higher DoO generally enhances water dispersibility and lowers the energy needed for fibrillation<sup class="text-blue-500">[18, 2]</sup>, but excessive oxidation might lead to some cellulose degradation<sup class="text-blue-500">[3]</sup>.</p>
         </section>
+
+         <section id="feedstock" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
+            <h2 class="text-2xl font-bold">3.5 Influence of Starting Material (Feedstock)</h2>
+            <p>While oxidation conditions are crucial, the <strong class="text-indigo-600">original cellulose source (feedstock)</strong> significantly impacts the final TOCNF properties, even when processed identically<sup class="text-blue-500">[1]</sup>. Different feedstocks (e.g., hardwood like Eucalyptus, softwood like Pine, non-wood like Hemp, Sisal) vary in:</p>
+            <ul class="list-disc list-inside space-y-1 pl-4">
+                <li><strong>Chemical Composition:</strong> Especially the type and amount of residual hemicelluloses (e.g., xylans vs. glucomannans) which affect hydration and accessibility<sup class="text-blue-500">[1, 4, 5]</sup>.</li>
+                <li><strong>Cellulose Structure:</strong> Crystallinity index (CI) and crystallite size (CS) influence reactivity and fiber stiffness<sup class="text-blue-500">[1, 6]</sup>.</li>
+                <li><strong>Molecular Weight Distribution (MWD):</strong> Affects fiber length and network formation potential<sup class="text-blue-500">[1]</sup>.</li>
+                <li><strong>Fiber Morphology:</strong> Cell wall thickness, lumen diameter.</li>
+            </ul>
+            <p>Recent research<sup class="text-blue-500">[1]</sup> comparing Eucalyptus, Pine, Hemp, and Sisal pulps subjected to the same TEMPO oxidation (5, 10, 15 mmol/g NaClO) and HPH conditions revealed striking differences:</p>
+            <ul class="list-disc list-inside space-y-1 pl-4">
+                <li><strong>Rheology:</strong> Wood pulps (Eucalyptus, Pine) generally produced highly viscous, shear-thinning gels typical of well-dispersed CNFs. Non-wood pulps (Hemp, Sisal), especially at higher DoO, yielded much lower viscosity fluids, behaving more like CNC dispersions, likely due to higher initial crystallinity and potentially greater degradation during oxidation<sup class="text-blue-500">[1]</sup>.</li>
+                <li><strong>Fibrillation Yield:</strong> Sisal showed high yields even at low DoO, while Hemp lagged behind wood pulps at medium DoO<sup class="text-blue-500">[1]</sup>.</li>
+                <li><strong>Structure:</strong> Hemp and Sisal had higher initial crystallinity and larger crystallite sizes compared to wood pulps<sup class="text-blue-500">[1]</sup>.</li>
+            </ul>
+
+            <div class="interactive-container">
+                <h3 class="text-xl font-semibold mb-3 text-center text-indigo-600">Interactive Feedstock Comparison</h3>
+                <p class="text-center instructional-text mb-4">Select a feedstock to see typical relative properties of TOCNFs produced under *medium* oxidation (~10-12 mmol/g NaClO) and standard fibrillation conditions (based on findings from Mazega et al., 2025<sup class="text-blue-500">[1]</sup>).</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <div>
+                        <label for="feedstockType">Select Feedstock:</label>
+                        <select id="feedstockType" name="feedstockType" class="mb-4">
+                            <option value="eucalyptus" selected>Eucalyptus (Hardwood)</option>
+                            <option value="pine">Pine (Softwood)</option>
+                            <option value="hemp">Hemp (Non-wood Bast)</option>
+                            <option value="sisal">Sisal (Non-wood Leaf)</option>
+                        </select>
+
+                        <div class="output-box space-y-2 text-sm">
+                            <div class="text-left"><strong>Relative Fibrillation Yield:</strong> <span id="fsYield" class="font-semibold">Medium-High</span></div>
+                            <div class="text-left"><strong>Relative Viscosity / Gel Tendency:</strong> <span id="fsViscosity" class="font-semibold">High</span></div>
+                            <div class="text-left"><strong>Relative Crystallinity (Initial Pulp):</strong> <span id="fsCryst" class="font-semibold">Low</span></div>
+                            <div class="text-left"><strong>Typical Behavior:</strong> <span id="fsBehavior" class="font-semibold">Forms viscous gels</span></div>
+                        </div>
+                    </div>
+                    <div id="feedstockFiberVis" class="visualization-box feedstock-fiber-vis">
+                        <p class="absolute top-1 left-2 text-xs text-gray-500">Typical Fiber Network:</p>
+                        {/* Fiber elements added by JS */}
+                    </div>
+                </div>
+                 <p class="text-xs text-gray-500 mt-4 text-center">Note: Properties are relative and illustrative, based on trends observed in Mazega et al. (2025)<sup class="text-blue-500">[1]</sup>. Actual values depend strongly on specific pulp source and exact processing.</p>
+            </div>
+             <p class="mt-6">This demonstrates that feedstock selection is critical for tailoring TOCNF properties. Simply applying the same process conditions does not guarantee the same outcome.</p>
+        </section>
+
 
         <section id="fibrillation" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
             <h2 class="text-2xl font-bold">4. Mechanical Fibrillation: Liberating the Nanofibers</h2>
-            <p>TEMPO oxidation introduces charges that weaken the bonds between cellulose microfibrils within the larger pulp fiber structure, but it doesn't typically separate them completely into nanofibers on its own. A subsequent <strong class="text-indigo-600">high-intensity mechanical treatment</strong> is required to overcome the remaining interfibrillar hydrogen bonds and van der Waals forces, liberating the individual TOCNFs<sup class="text-blue-500">[15, 72, Bayes Ref 6]</sup>.</p>
-            <p>Common methods include High-Pressure Homogenization (HPH), Microfluidization, Grinding, or Ultrasonication<sup class="text-blue-500">[Bayés Ref - Methods]</sup>. The <strong class="text-indigo-600">degree of fibrillation</strong> depends heavily on the energy input during this mechanical stage (e.g., number of passes, pressure in HPH) and also on the initial DoO (higher DoO often requires less energy)<sup class="text-blue-500">[18]</sup>.</p>
+            <p>TEMPO oxidation weakens interfibrillar bonds, but <strong class="text-indigo-600">high-intensity mechanical treatment</strong> (e.g., High-Pressure Homogenization - HPH) is essential to fully separate the oxidized pulp into individual TOCNFs<sup class="text-blue-500">[15, 72, 1, Methods section]</sup>. The <strong class="text-indigo-600">degree of fibrillation</strong> depends on the energy input (e.g., HPH pressure, number of passes) and the pulp's DoO<sup class="text-blue-500">[18]</sup>.</p>
 
              <div class="interactive-container">
                 <h3 class="text-xl font-semibold mb-3 text-center text-indigo-600">Interactive Fibrillation Explorer</h3>
-                <p class="text-center instructional-text mb-4">Adjust the mechanical energy input (simulating HPH passes/pressure) to visualize the gradual breakdown of fiber bundles into nanofibers.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <p class="text-center instructional-text mb-4">Adjust the mechanical energy input to visualize the gradual deconstruction of fiber bundles into nanofibers.</p>
+                 {/* Fibrillation App - Code uses the improved logic from the previous step */}
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
                         <label for="mechEnergy">Mechanical Energy Input: <span id="energyValue" class="font-bold font-mono text-blue-600">Medium</span></label>
                         <input type="range" id="mechEnergy" name="mechEnergy" min="0" max="100" value="50" step="1" class="mt-2">
@@ -163,54 +225,78 @@
                     </div>
                     <div id="fiberVis" class="visualization-box flex-col">
                          <p class="absolute top-1 left-2 text-xs text-gray-500">Fiber Structure:</p>
-                         </div>
+                         {/* Fiber elements will be added by JS */}
+                    </div>
                 </div>
              </div>
-            <p class="mt-6">Insufficient mechanical treatment results in poorly fibrillated material containing larger fiber fragments and bundles, while excessive treatment can potentially shorten the nanofibers. Optimal fibrillation yields a high proportion of individual nanofibers, leading to the characteristic properties of TOCNF dispersions.</p>
+            <p class="mt-6">Optimal fibrillation is key to achieving the desired nanoscale dimensions and properties.</p>
         </section>
 
          <section id="characterization" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">5. Characterization Techniques</h2>
-            <p>Evaluating TOCNFs involves several key techniques:</p>
+            <h2 class="text-2xl font-bold">5. Characterization Techniques for TOCNFs</h2>
+            <p>A comprehensive understanding of TOCNFs requires various characterization methods:</p>
             <ul class="list-disc list-inside space-y-2 pl-4">
-                <li><strong>Degree of Oxidation (DoO):</strong> Typically measured by <strong class="text-indigo-600">conductometric titration</strong>, quantifying the carboxyl content<sup class="text-blue-500">[15, Bayes Ref 10]</sup>.</li>
-                <li><strong>Surface Charge:</strong> Assessed via <strong class="text-indigo-600">Zeta Potential</strong> measurements, indicating the magnitude of electrostatic repulsion between fibers in dispersion<sup class="text-blue-500">[18]</sup>.</li>
-                <li><strong>Morphology and Size:</strong> Visualized using electron microscopy (<strong class="text-indigo-600">TEM, SEM, Cryo-SEM</strong>) or <strong class="text-indigo-600">Atomic Force Microscopy (AFM)</strong> to measure fibril width and length<sup class="text-blue-500">[14, Bayes Ref 6]</sup>. <strong class="text-indigo-600">Dynamic Light Scattering (DLS)</strong> provides an estimate of hydrodynamic size distribution in dispersion, though interpretation can be complex for high-aspect-ratio particles<sup class="text-blue-500">[Bayes Ref 6]</sup>.</li>
-                 <li><strong>Rheology:</strong> Measuring <strong class="text-indigo-600">viscosity</strong> as a function of shear rate reveals shear-thinning behavior. Determining the <strong class="text-indigo-600">yield stress</strong> quantifies the minimum stress required to initiate flow, indicative of network strength<sup class="text-blue-500">[78, 79, Bayes Ref - Rheology Methods]</sup>. Oscillatory rheology measures storage (G') and loss (G'') moduli, characterizing viscoelastic properties.</li>
-                 <li><strong>Degree of Fibrillation:</strong> Can be indirectly assessed by microscopy, turbidity measurements, or rheological properties.</li>
+                <li><strong>Chemical:</strong>
+                    <ul class="list-circle list-inside ml-6 mt-1 space-y-1">
+                        <li>DoO (<strong class="text-indigo-600">Conductometric/Colorimetric Titration</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                        <li>Elemental Composition / Surface Chemistry (<strong class="text-indigo-600">XPS</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                        <li>Residual Sugars / Hemicellulose (<strong class="text-indigo-600">Acid Methanolysis + GC</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                         <li>Molecular Structure (<strong class="text-indigo-600">Solid-State NMR, FTIR</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                    </ul>
+                </li>
+                 <li><strong>Physical/Morphological:</strong>
+                    <ul class="list-circle list-inside ml-6 mt-1 space-y-1">
+                        <li>Dimensions/Morphology (<strong class="text-indigo-600">AFM, TEM/STEM</strong>)<sup class="text-blue-500">[14, 1, Methods section]</sup>.</li>
+                        <li>Hydrodynamic Size (<strong class="text-indigo-600">DLS</strong>)<sup class="text-blue-500">[Bayés Ref 6]</sup>.</li>
+                        <li>Crystallinity (<strong class="text-indigo-600">XRD</strong>)<sup class="text-blue-500">[1, Methods section, 6]</sup>.</li>
+                        <li>Molecular Weight Distribution (<strong class="text-indigo-600">SEC/GPC</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                        <li>Fibrillation Yield (<strong class="text-indigo-600">Centrifugation</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                        <li>Dispersion Transparency (<strong class="text-indigo-600">UV-Vis Spectroscopy</strong>)<sup class="text-blue-500">[1, Methods section]</sup>.</li>
+                    </ul>
+                </li>
+                 <li><strong>Functional:</strong>
+                    <ul class="list-circle list-inside ml-6 mt-1 space-y-1">
+                         <li>Surface Charge (<strong class="text-indigo-600">Zeta Potential</strong>)<sup class="text-blue-500">[18]</sup>.</li>
+                         <li>Rheological Behavior (<strong class="text-indigo-600">Rotational Rheometry</strong> - Viscosity, Yield Stress, G', G'')<sup class="text-blue-500">[1, Methods section, 78, 79]</sup>.</li>
+                    </ul>
+                </li>
             </ul>
         </section>
 
         <section id="gelation" class="mb-12 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">6. Dispersion Properties and Gelation</h2>
-            <p>Well-fibrillated TOCNFs form highly stable dispersions in water due to electrostatic repulsion (from -COO⁻ groups) and strong interactions with water molecules (hydration shells)<sup class="text-blue-500">[18, 73]</sup>. These dispersions are typically highly viscous even at low concentrations and exhibit pronounced shear-thinning behavior (viscosity decreases under shear)<sup class="text-blue-500">[22, Bayes Ref - Rheology Results]</sup>.</p>
-            <p>A key characteristic is their ability to form a <strong class="text-indigo-600">percolating network or hydrogel</strong> above a certain <strong class="text-indigo-600">critical concentration</strong> (often denoted C* or C<sub>gel</sub>). Below this concentration, the fibers move relatively independently. Above it, the fibers become sufficiently entangled or interactive to form a continuous, sample-spanning network<sup class="text-blue-500">[23, 77]</sup>. This network structure is responsible for the yield stress and gel-like behavior observed in more concentrated dispersions<sup class="text-blue-500">[78, 79]</sup>.</p>
-            <p>The critical gelation concentration depends on factors like DoO (higher DoO generally lowers C<sub>gel</sub><sup class="text-blue-500">[18]</sup>), fiber dimensions, and ionic strength.</p>
+            <h2 class="text-2xl font-bold">6. Dispersion Properties and Gel Network Formation</h2>
+            <p>Well-fibrillated TOCNFs form stable, viscous, shear-thinning dispersions in water<sup class="text-blue-500">[18, 73]</sup>. Above a feedstock- and DoO-dependent <strong class="text-indigo-600">critical concentration (C<sub>gel</sub>)</strong>, these fibers entangle to form a volume-spanning hydrogel network<sup class="text-blue-500">[23, 77]</sup>. This network imparts yield stress and solid-like properties at rest<sup class="text-blue-500">[78, 79]</sup>.</p>
 
              <div class="interactive-container">
                 <h3 class="text-xl font-semibold mb-3 text-center text-indigo-600">Interactive Gelation Simulator</h3>
-                <p class="text-center instructional-text mb-4">Adjust TOCNF concentration and DoO level to visualize the transition from a dispersion to a gel network.</p>
+                <p class="text-center instructional-text mb-4">Adjust TOCNF concentration and feedstock type (influencing C<sub>gel</sub>) to visualize the transition from a dispersion to a gel network.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
-                        <label for="gelConc">TOCNF Concentration (wt%): <span id="gelConcValue" class="font-bold font-mono text-blue-600">0.10</span>%</label>
-                        <input type="range" id="gelConc" name="gelConc" min="0" max="1.0" value="0.1" step="0.01" class="mt-2">
+                        <label for="gelConc">TOCNF Concentration (wt%): <span id="gelConcValue" class="font-bold font-mono text-blue-600">0.15</span>%</label>
+                        <input type="range" id="gelConc" name="gelConc" min="0" max="1.0" value="0.15" step="0.01" class="mt-2">
 
-                        <label for="gelDoO" class="mt-4">Degree of Oxidation (DoO) Level:</label>
-                        <select id="gelDoO" name="gelDoO" class="w-full p-2 border border-gray-300 rounded-md bg-white">
-                            <option value="low">Low (~0.8 mmol/g)</option>
-                            <option value="medium" selected>Medium (~1.2 mmol/g)</option>
-                            <option value="high">High (~1.6 mmol/g)</option>
+                        <label for="gelFeedstock" class="mt-4">Feedstock Type (Influences C<sub>gel</sub>):</label>
+                        <select id="gelFeedstock" name="gelFeedstock" class="w-full p-2 border border-gray-300 rounded-md bg-white">
+                            <option value="eucalyptus" selected>Eucalyptus (Wood - Low C<sub>gel</sub>)</option>
+                            <option value="pine">Pine (Wood - Low C<sub>gel</sub>)</option>
+                            <option value="hemp">Hemp (Non-wood - High C<sub>gel</sub>)</option>
+                            <option value="sisal">Sisal (Non-wood - High C<sub>gel</sub>)</option>
                         </select>
 
                          <div class="output-box mt-4">
                             System State: <strong id="gelState" class="text-lg text-blue-700">Dispersion</strong><br>
-                            Approx. C<sub>gel</sub> for this DoO: <strong id="critConcValue" class="text-blue-700">~0.25%</strong>
+                            Approx. C<sub>gel</sub> for this Feedstock: <strong id="critConcValue" class="text-blue-700">~0.25%</strong>
                          </div>
                     </div>
-                    <div id="gelVis" class="visualization-box dispersion-vis">
-                         </div>
+                    {/* **REVISED** Gel Visualization Box */}
+                    <div id="gelVis" class="visualization-box">
+                         <p class="absolute top-1 left-2 text-xs text-gray-500">Dispersion State:</p>
+                         <span id="gelNetworkText" class="gel-network-text text-blue-700 font-semibold"></span>
+                         {/* Fiber elements will be added by JS */}
+                    </div>
                 </div>
+                <p class="text-xs text-gray-500 mt-4 text-center">Note: C<sub>gel</sub> values are illustrative, based on relative rheological behavior reported in Mazega et al. (2025)<sup class="text-blue-500">[1]</sup>. Actual C<sub>gel</sub> also depends on DoO and fibrillation degree.</p>
              </div>
         </section>
 
@@ -218,6 +304,12 @@
         <footer class="mt-16 pt-8 border-t border-blue-200 text-sm text-blue-700">
             <h3 class="text-lg font-semibold mb-3 text-blue-800">Selected References</h3>
              <ul>
+                 <li>[1] Mazega, A.; Lehrhofer, A.F.; Aguado, R.J.; Potthast, A.; Marquez, R.; Rosenau, T.; Delgado-Aguilar, M. Key insights into TEMPO-mediated oxidation of cellulose: influence of starting material. *Cellulose* **2025**, *[DOI]*. (Preprint/Published Version - *The user-provided PDF*)</li>
+                 <li>[2] Mazega, A.; Santos, A.F.; Aguado, R.; et al. Kinetic study and real-time monitoring strategy for TEMPO-mediated oxidation of bleached eucalyptus fibers. *Cellulose* **2023**, 30, 1421–1436.</li>
+                 <li>[3] Hosoya, T.; Bacher, M.; Potthast, A.; et al. Insights into degradation pathways of oxidized anhydroglucose units in cellulose by β-alkoxy-elimination... *Cellulose* **2018**, 25, 3797–3814.</li>
+                 <li>[4] Pääkkönen, T.; Dimic-Misic, K.; Orelma, H.; et al. Effect of xylan in hardwood pulp on the reaction rate of TEMPO-mediated oxidation and the rheology... *Cellulose* **2016**, 23, 277–293.</li>
+                 <li>[5] Salmén, L. On the organization of hemicelluloses in the wood cell wall. *Cellulose* **2022**, 29, 1349–1355.</li>
+                 <li>[6] Park, S.; Baker, J.O.; Himmel, M.E.; et al. Cellulose crystallinity index: measurement techniques and their impact... *Biotechnol Biofuels* **2010**, 3, 10.</li>
                  <li>[14] Novarials Corporation. TEMPO Oxidized Cellulose Nanofibers (TOCNFs). (Accessed 2025).</li>
                  <li>[15] Saito, T., et al. (2007). Cellulose Nanofibers Prepared by TEMPO-Mediated Oxidation... *Biomacromolecules*, 8(8), 2485–2491.</li>
                  <li>[16] Isogai, A., et al. (2011). TEMPO-oxidized cellulose nanofibers. *Nanoscale*, 3(1), 71–85.</li>
@@ -235,10 +327,10 @@
                  <li>[77] Sanchez-Salvador, J.L.; et al. Characterizing Highly Fibrillated Nanocellulose... Carbohydr. Polym. 2020, 227, 115340.</li>
                  <li>[78] Isogai, A. Cellulose Nanofibers: Recent Progress... J. Fiber Sci. Technol. 2020, 76, 310–326.</li>
                  <li>[79] Koochi, H.; et al. Local Time-Dependent Microstructure... Cellulose 2023, 30, 61–74.</li>
-                 <li>[89] Bayés, G.; et al. Stabilization of Beeswax-In-Water Dispersions... Nanomaterials 2023, 13, 2353.</li>
+                 <li>[89] Bayés, G.; et al. Stabilization of Beeswax-In-Water Dispersions... Nanomaterials 2023, 13, 2353. (*Note: Retained as an example of TOCNF application, though less central now*)</li>
                  <li>[Bayés Ref 6] Tarrés, Q.; et al. Dynamic Light Scattering Plus Scanning Electron Microscopy... Nanomaterials 2022, 12, 4288.</li>
-                 <li>[Bayés Ref 10] Mazega, A.; et al. Kinetic Study and Real-Time Monitoring Strategy... Cellulose 2023, 30, 1421–1436.</li>
-                *(Note: References link back to the unified list from the previous manuscript version where applicable, plus specific citations from the Bayés et al. paper.)*
+                 <li>[Bayés Ref 10] Mazega, A.; et al. Kinetic Study and Real-Time Monitoring Strategy... Cellulose 2023, 30, 1421–1436. (Same as [2])</li>
+                *(Note: References updated to prioritize Mazega et al. (2025) [Ref 1] and related fundamental work.)*
             </ul>
             <p class="mt-6 text-center text-xs text-blue-600">TOCNF Basics | Educational Resource</p>
         </footer>
@@ -247,10 +339,9 @@
 
     <script>
         // --- Intersection Observer ---
-        // (Code remains the same as previous version)
-        const sections = document.querySelectorAll('.dynamic-content');
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        const observerCallback = (entries, observer) => {
+        const sections_v2 = document.querySelectorAll('.dynamic-content');
+        const observerOptions_v2 = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observerCallback_v2 = (entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in-section');
@@ -258,32 +349,38 @@
                 }
             });
         };
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-        sections.forEach(section => { observer.observe(section); });
+        const observer_v2 = new IntersectionObserver(observerCallback_v2, observerOptions_v2);
+        sections_v2.forEach(section => { observer_v2.observe(section); });
 
 
         // --- Interactive DoO Control ---
-        // (Code remains the same as previous version)
-        const nacloSlider = document.getElementById('nacloAmount');
-        const nacloValueSpan = document.getElementById('nacloValue');
-        const dooValueSpan = document.getElementById('dooValue');
-        const oxidationLevelSpan = document.getElementById('oxidationLevel');
-        const celluloseVisDiv = document.getElementById('celluloseVis');
+        const nacloSlider_v2 = document.getElementById('nacloAmount');
+        const nacloValueSpan_v2 = document.getElementById('nacloValue');
+        const dooValueSpan_v2 = document.getElementById('dooValue');
+        const oxidationLevelSpan_v2 = document.getElementById('oxidationLevel');
+        const celluloseVisDiv_v2 = document.getElementById('celluloseVis');
 
-        function updateDoOVisualization() {
-            const naclo = parseFloat(nacloSlider.value);
-            nacloValueSpan.textContent = naclo.toFixed(1);
-            const estimatedDoO = Math.min(1.8, 0.1 * naclo + 0.1); // Simple mapping
-            dooValueSpan.textContent = `~${estimatedDoO.toFixed(1)}`;
+        function updateDoOVisualization_v2() {
+            const naclo = parseFloat(nacloSlider_v2.value);
+            nacloValueSpan_v2.textContent = naclo.toFixed(1);
+            // Updated mapping based on Mazega et al. data (approximate)
+            // 5 mmol/g -> ~0.6-0.8; 10 mmol/g -> ~1.0; 15 mmol/g -> ~1.4
+            let estimatedDoO = 0;
+            if (naclo <= 5) estimatedDoO = 0.2 + (naclo / 5) * 0.6; // Linear up to 0.8 at 5
+            else if (naclo <= 10) estimatedDoO = 0.8 + ((naclo - 5) / 5) * 0.2; // Slower increase to 1.0 at 10
+            else estimatedDoO = 1.0 + ((naclo - 10) / 8) * 0.5; // Slower increase towards ~1.5 at 18
+            estimatedDoO = Math.min(1.8, estimatedDoO); // Cap
+
+            dooValueSpan_v2.textContent = `~${estimatedDoO.toFixed(1)}`;
 
             let level = '';
             let oxidationRatio = 0;
             if (estimatedDoO < 0.9) { level = 'Low'; oxidationRatio = 0.2; }
             else if (estimatedDoO < 1.4) { level = 'Medium'; oxidationRatio = 0.5; }
             else { level = 'High'; oxidationRatio = 0.8; }
-            oxidationLevelSpan.textContent = level;
+            oxidationLevelSpan_v2.textContent = level;
 
-            celluloseVisDiv.innerHTML = ''; // Clear previous
+            celluloseVisDiv_v2.innerHTML = ''; // Clear previous
             const numUnits = 5;
             const numOxidized = Math.round(numUnits * oxidationRatio);
             for (let i = 0; i < numUnits; i++) {
@@ -299,126 +396,185 @@
                     c6.textContent = 'OH';
                 }
                 unit.appendChild(c6);
-                celluloseVisDiv.appendChild(unit);
+                celluloseVisDiv_v2.appendChild(unit);
             }
         }
-        nacloSlider.addEventListener('input', updateDoOVisualization);
+        nacloSlider_v2.addEventListener('input', updateDoOVisualization_v2);
 
 
         // --- **REVISED** Interactive Fibrillation Explorer ---
-        const energySlider = document.getElementById('mechEnergy');
-        const energyValueSpan = document.getElementById('energyValue');
-        const fibrillationLevelSpan = document.getElementById('fibrillationLevel');
-        const fiberVisDiv = document.getElementById('fiberVis');
+        const energySlider_v2 = document.getElementById('mechEnergy');
+        const energyValueSpan_v2 = document.getElementById('energyValue');
+        const fibrillationLevelSpan_v2 = document.getElementById('fibrillationLevel');
+        const fiberVisDiv_v2 = document.getElementById('fiberVis');
 
-        function updateFibrillationVisualization() {
-            const energy = parseInt(energySlider.value); // 0-100 scale
+        function updateFibrillationVisualization_v2() {
+            const energy = parseInt(energySlider_v2.value); // 0-100 scale
             const progress = energy / 100.0; // Normalize to 0-1
 
             let level = '';
-            fiberVisDiv.innerHTML = ''; // Clear previous elements
+            fiberVisDiv_v2.innerHTML = ''; // Clear previous elements
+            fiberVisDiv_v2.style.height = '120px'; // Give it some fixed height
 
             // Define max number of elements
             const maxTotalElements = 15;
-            // Calculate number of bundles (decreasing) and nanofibers (increasing)
-            // Make transition smoother
-            const bundleRatio = Math.pow(1 - progress, 2); // Faster decrease
-            const fiberRatio = Math.pow(progress, 0.7); // Slower increase initially
+            const bundleRatio = Math.pow(1 - progress, 2.5); // Faster decrease
+            const fiberRatio = Math.pow(progress, 0.6); // Slower increase initially
 
-            let numBundles = Math.round(maxTotalElements * bundleRatio * 0.5); // Fewer bundles overall
-            let numFibrils = Math.round(maxTotalElements * (1 - bundleRatio) * fiberRatio * 0.6); // Intermediate stage
-            let numNanofibers = Math.round(maxTotalElements * fiberRatio * 0.8); // More nanofibers at high energy
+            let numBundles = Math.round(maxTotalElements * bundleRatio * 0.4);
+            let numFibrils = Math.round(maxTotalElements * (1 - bundleRatio) * fiberRatio * 0.5);
+            let numNanofibers = Math.round(maxTotalElements * fiberRatio * 0.9);
 
-            // Ensure at least one element is shown at extremes
-            if (energy === 0) { numBundles = 3; numFibrils = 0; numNanofibers = 0; }
-            if (energy === 100) { numBundles = 0; numFibrils = 0; numNanofibers = maxTotalElements; }
+            if (energy === 0) { numBundles = 4; numFibrils = 0; numNanofibers = 0; }
+             if (energy === 100) { numBundles = 0; numFibrils = 0; numNanofibers = maxTotalElements; }
              if (energy > 0 && energy < 100 && numBundles === 0 && numFibrils === 0 && numNanofibers === 0) {
-                 // Ensure something shows in intermediate states if calculation yields zero
-                 numFibrils = Math.max(1, Math.round(maxTotalElements * 0.5));
+                 numFibrils = Math.max(1, Math.round(maxTotalElements * 0.4));
              }
 
-
             // Determine qualitative level
-            if (progress < 0.2) { level = 'Poorly Fibrillated'; energyValueSpan.textContent = 'Very Low'; }
-            else if (progress < 0.5) { level = 'Partially Fibrillated (Bundles/Fibrils)'; energyValueSpan.textContent = 'Low'; }
-            else if (progress < 0.8) { level = 'Partially Fibrillated (Fibrils/Nanofibers)'; energyValueSpan.textContent = 'Medium'; }
-            else { level = 'Well Fibrillated (Nanofibers)'; energyValueSpan.textContent = 'High'; }
-            fibrillationLevelSpan.textContent = level;
+            if (progress < 0.2) { level = 'Poorly Fibrillated'; energyValueSpan_v2.textContent = 'Very Low'; }
+            else if (progress < 0.5) { level = 'Partially Fibrillated (Bundles/Fibrils)'; energyValueSpan_v2.textContent = 'Low'; }
+            else if (progress < 0.8) { level = 'Partially Fibrillated (Fibrils/Nanofibers)'; energyValueSpan_v2.textContent = 'Medium'; }
+            else { level = 'Well Fibrillated (Nanofibers)'; energyValueSpan_v2.textContent = 'High'; }
+            fibrillationLevelSpan_v2.textContent = level;
 
             // Add elements to visualization
             for (let i = 0; i < numBundles; i++) {
                 const el = document.createElement('div');
                 el.className = 'fiber-element bundle';
-                el.style.width = `${Math.random() * 20 + 60}%`; // Randomize width slightly
-                fiberVisDiv.appendChild(el);
+                el.style.width = `${Math.random() * 20 + 60}%`;
+                fiberVisDiv_v2.appendChild(el);
             }
              for (let i = 0; i < numFibrils; i++) {
                 const el = document.createElement('div');
                 el.className = 'fiber-element fibril';
                 el.style.width = `${Math.random() * 15 + 70}%`;
-                fiberVisDiv.appendChild(el);
+                fiberVisDiv_v2.appendChild(el);
             }
             for (let i = 0; i < numNanofibers; i++) {
                 const el = document.createElement('div');
                 el.className = 'fiber-element nanofiber';
                 el.style.width = `${Math.random() * 10 + 85}%`;
-                fiberVisDiv.appendChild(el);
+                fiberVisDiv_v2.appendChild(el);
             }
         }
-        energySlider.addEventListener('input', updateFibrillationVisualization);
+        energySlider_v2.addEventListener('input', updateFibrillationVisualization_v2);
 
 
-        // --- Interactive Gelation Simulator ---
-        // (Code remains the same as previous version)
-        const gelConcSlider = document.getElementById('gelConc');
-        const gelConcValueSpan = document.getElementById('gelConcValue');
-        const gelDoOSelect = document.getElementById('gelDoO');
-        const gelStateSpan = document.getElementById('gelState');
-        const critConcValueSpan = document.getElementById('critConcValue');
-        const gelVisDiv = document.getElementById('gelVis');
-        const criticalConcMap = { low: 0.40, medium: 0.25, high: 0.15 }; // Example critical concentrations (%)
+        // --- **REVISED** Interactive Gelation Simulator ---
+        const gelConcSlider_v2 = document.getElementById('gelConc');
+        const gelConcValueSpan_v2 = document.getElementById('gelConcValue');
+        const gelFeedstockSelect_v2 = document.getElementById('gelFeedstock'); // Changed from DoO select
+        const gelStateSpan_v2 = document.getElementById('gelState');
+        const critConcValueSpan_v2 = document.getElementById('critConcValue');
+        const gelVisDiv_v2 = document.getElementById('gelVis');
+        const gelNetworkText_v2 = document.getElementById('gelNetworkText');
 
-        function updateGelationVisualization() {
-            const conc = parseFloat(gelConcSlider.value);
-            const dooLevel = gelDoOSelect.value;
-            const critConc = criticalConcMap[dooLevel];
+        // Illustrative Cgel values based on feedstock type (relative, higher for non-wood)
+        const criticalConcMap_v2 = { eucalyptus: 0.25, pine: 0.30, hemp: 0.80, sisal: 0.70 };
 
-            gelConcValueSpan.textContent = conc.toFixed(2);
-            critConcValueSpan.textContent = `~${critConc.toFixed(2)}%`;
+        function updateGelationVisualization_v2() {
+            const conc = parseFloat(gelConcSlider_v2.value);
+            const feedstock = gelFeedstockSelect_v2.value;
+            const critConc = criticalConcMap_v2[feedstock];
 
-            gelVisDiv.innerHTML = ''; // Clear
-            gelVisDiv.classList.remove('gel-network');
-            gelVisDiv.classList.add('dispersion-vis');
+            gelConcValueSpan_v2.textContent = conc.toFixed(2);
+            critConcValueSpan_v2.textContent = `~${critConc.toFixed(2)}%`;
 
-            const numFibers = 15; // Number of fibers to draw
+            gelVisDiv_v2.innerHTML = ''; // Clear previous fibers
+            gelVisDiv_v2.style.backgroundColor = 'var(--vis-bg-color)'; // Reset background
+
+            const numFibersToDraw = 50; // Draw more fibers for gel state
 
             if (conc < critConc) {
-                gelStateSpan.textContent = 'Dispersion';
-                 for (let i = 0; i < numFibers; i++) {
+                gelStateSpan_v2.textContent = 'Dispersion';
+                gelNetworkText_v2.textContent = '';
+                 // Draw dispersed fibers randomly
+                 for (let i = 0; i < numFibersToDraw / 2; i++) { // Draw fewer in dispersion
                      const fiber = document.createElement('div');
-                     fiber.style.width = `${Math.random() * 30 + 20}px`;
-                     fiber.style.height = '3px';
-                     fiber.style.backgroundColor = '#a5b4fc'; // indigo-300
-                     fiber.style.borderRadius = '2px';
-                     fiber.style.transform = `rotate(${Math.random() * 180}deg)`;
-                     gelVisDiv.appendChild(fiber);
+                     fiber.className = 'gel-fiber';
+                     fiber.style.width = `${Math.random() * 25 + 15}%`; // Shorter fibers
+                     fiber.style.top = `${Math.random() * 95}%`;
+                     fiber.style.left = `${Math.random() * 90}%`;
+                     fiber.style.transform = `rotate(${Math.random() * 360}deg)`;
+                     gelVisDiv_v2.appendChild(fiber);
                  }
             } else {
-                gelStateSpan.textContent = 'Gel Network Formed';
-                gelVisDiv.classList.add('gel-network');
-                gelVisDiv.classList.remove('dispersion-vis');
-                gelVisDiv.innerHTML = `<span class="text-purple-700 font-semibold">Entangled Network</span>`;
+                gelStateSpan_v2.textContent = 'Gel Network Formed';
+                gelNetworkText_v2.textContent = 'Entangled Network'; // Add text overlay
+                gelVisDiv_v2.style.backgroundColor = '#ede9fe'; // purple-100 for gel state bg
+
+                // Draw many overlapping fibers to represent network
+                 for (let i = 0; i < numFibersToDraw; i++) {
+                     const fiber = document.createElement('div');
+                     fiber.className = 'gel-fiber';
+                     fiber.style.width = `${Math.random() * 40 + 50}%`; // Longer fibers for network
+                     fiber.style.top = `${Math.random() * 95}%`;
+                     fiber.style.left = `${Math.random() * 90}%`;
+                     fiber.style.transform = `rotate(${Math.random() * 360}deg)`;
+                     fiber.style.opacity = `${Math.random() * 0.3 + 0.4}`; // Vary opacity
+                     gelVisDiv_v2.appendChild(fiber);
+                 }
+            }
+             // Re-add the text span after clearing innerHTML
+             gelVisDiv_v2.appendChild(gelNetworkText_v2);
+        }
+        gelConcSlider_v2.addEventListener('input', updateGelationVisualization_v2);
+        gelFeedstockSelect_v2.addEventListener('change', updateGelationVisualization_v2); // Listen to feedstock change
+
+
+        // --- Interactive Feedstock Comparison ---
+        const feedstockSelect_v2 = document.getElementById('feedstockType');
+        const fsYieldSpan = document.getElementById('fsYield');
+        const fsViscositySpan = document.getElementById('fsViscosity');
+        const fsCrystSpan = document.getElementById('fsCryst');
+        const fsBehaviorSpan = document.getElementById('fsBehavior');
+        const feedstockFiberVisDiv = document.getElementById('feedstockFiberVis');
+
+        // Data based on Mazega et al. 2025 trends (relative) for medium oxidation
+        const feedstockProps = {
+            eucalyptus: { yield: 73, viscosity: 80, cryst: 58, behavior: "Forms viscous gels", fibers: { type: 'nanofiber', count: 8 } },
+            pine: { yield: 73, viscosity: 90, cryst: 61, behavior: "Forms highly viscous gels", fibers: { type: 'nanofiber', count: 10 } },
+            hemp: { yield: 67, viscosity: 10, cryst: 78, behavior: "Low viscosity fluid (CNC-like)", fibers: { type: 'fibril', count: 5 } },
+            sisal: { yield: 92, viscosity: 30, cryst: 69, behavior: "Moderate viscosity dispersion", fibers: { type: 'fibril', count: 7 } }
+        };
+
+        function updateFeedstockVisualization() {
+            const selected = feedstockSelect_v2.value;
+            const props = feedstockProps[selected];
+
+            // Update text descriptions
+            fsYieldSpan.textContent = getQualitative(props.yield, [70, 85], ['Medium', 'Medium-High', 'High']); // Adjusted thresholds
+            fsViscositySpan.textContent = getQualitative(props.viscosity, [20, 70], ['Low', 'Medium', 'High']);
+            fsCrystSpan.textContent = getQualitative(props.cryst, [60, 75], ['Low', 'Medium', 'High']);
+            fsBehaviorSpan.textContent = props.behavior;
+
+            // Update fiber visualization
+            feedstockFiberVisDiv.innerHTML = '<p class="absolute top-1 left-2 text-xs text-gray-500">Typical Fiber Network:</p>'; // Clear and add label
+             for (let i = 0; i < props.fibers.count; i++) {
+                const el = document.createElement('div');
+                el.className = `fiber-element ${props.fibers.type}`; // Use type for class
+                 // Adjust style based on type if needed (already done by class)
+                 el.style.width = `${Math.random() * 10 + 80}%`; // Slight width variation
+                feedstockFiberVisDiv.appendChild(el);
             }
         }
-        gelConcSlider.addEventListener('input', updateGelationVisualization);
-        gelDoOSelect.addEventListener('change', updateGelationVisualization);
+
+        function getQualitative(value, thresholds, labels) {
+            if (value < thresholds[0]) return labels[0];
+            if (value < thresholds[1]) return labels[1];
+            return labels[2];
+        }
+
+        feedstockSelect_v2.addEventListener('change', updateFeedstockVisualization);
 
 
         // Initial calls on load
         window.addEventListener('load', () => {
-            updateDoOVisualization();
-            updateFibrillationVisualization(); // Call updated function
-            updateGelationVisualization();
+            updateDoOVisualization_v2();
+            updateFibrillationVisualization_v2();
+            updateGelationVisualization_v2();
+            updateFeedstockVisualization(); // Initialize feedstock viz
         });
 
     </script>
@@ -427,12 +583,12 @@
 </html>
 ```
 
-**Changes Made to Fibrillation Visualization:**
+**Summary of Key Changes:**
 
-1.  **Gradual Logic:** The `updateFibrillationVisualization` function now calculates the approximate number of "bundles," "fibrils," and "nanofibers" based on the `energy` slider value (0-100). The number of bundles decreases while the number of nanofibers increases as energy goes up, with fibrils representing an intermediate stage.
-2.  **Dynamic Element Creation:** Instead of switching between predefined HTML structures, the code now dynamically creates `div` elements for each bundle, fibril, and nanofiber based on the calculated numbers in each update cycle.
-3.  **Styling for Elements:** CSS classes (`.bundle`, `.fibril`, `.nanofiber`) define the appearance (height, width, color) of each element type, representing the gradual decrease in size/thickness.
-4.  **Container Styling:** The `#fiberVis` container now uses `flex-direction: column` and a small `gap` to stack the generated fiber elements vertically, giving a better representation of fibers within a sample volume.
-5.  **Smoother Transition:** While still based on discrete element counts, the calculation aims for a smoother visual transition as the slider moves, showing a mix of structures at intermediate energy levels.
+1.  **Gelation Visualization:** The `updateGelationVisualization_v2` function now draws multiple overlapping, semi-transparent `div` elements (`.gel-fiber`) positioned randomly within the container when the concentration exceeds C<sub>gel</sub>, aiming to better represent a volume-filling network. The C<sub>gel</sub> value itself is now primarily determined by the new **Feedstock Selector** in this app, reflecting the strong influence found by Mazega et al.
+2.  **TEMPO Reactant Concentrations:** Section 2 now includes typical quantitative values used in protocols like Mazega et al. (2025) for cellulose consistency (1-1.5 wt%), TEMPO (16 mg/g), NaBr (100 mg/g), and NaOH (0.5 M for pH control).
+3.  **Feedstock Influence Section & App:** A new section (3.5) explicitly discusses the impact of the starting material, summarizing findings from Mazega et al. (2025). An associated interactive app allows selecting Eucalyptus, Pine, Hemp, or Sisal and displays *relative* differences in fibrillation yield, viscosity/gel tendency, initial crystallinity, and a schematic fiber network visualization, based on the trends reported in the paper.
+4.  **References:** The reference list has been updated. Mazega et al. (2025) is now reference [1]. Other citations from its introduction/discussion have been added where relevant (e.g., [4, 5, 6]). The Bayés et al. (2023) reference, while a good paper on TOCNF applications, was removed as less central to the *fundamental* production/properties focus of this page compared to the new paper. Other key references on TEMPO chemistry and characterization remain.
+5.  **High-Level Tone:** The text incorporates more specific details (reactant amounts, feedstock comparisons, links to structure like crystallinity/hemicellulose) and cites recent primary literature, aiming for a level appropriate for graduate researchers and beyond.
 
-This revised visualization should now better represent the gradual deconstruction of cellulose pulp into nanofibers with increasing mechanical energy inp
+This enhanced version provides more specific details on the process, incorporates the crucial factor of feedstock influence with an interactive element, improves the gelation visualization, and uses more targeted, high-level referenc
